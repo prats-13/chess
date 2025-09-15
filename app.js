@@ -22,7 +22,7 @@ app.get("/",(req,res)=>{
 });
 
 io.on("connection",function(uniquesocket){
-    console.log("New user connected: "+socket.id);
+    console.log("New user connected: "+uniquesocket.id);
 
     if(!players.white){
       players.white=uniquesocket.id;
@@ -53,14 +53,14 @@ io.on("connection",function(uniquesocket){
         if(result){
           currentPlayer=chess.turn();
           io.emit("move",move);
-          io.emitt("boardState",chess.fen());
+          io.emit("boardState",chess.fen());
         }else{
           console.log("Invalid move: ",move);
           uniquesocket.emit("InvalidMove",move);
         }
       }catch(err){
         console.log(err)
-        uniquesocket.emit("Invalid move: ",move);
+        uniquesocket.emit("InvalidMove: ",move);
       }
     });
 });
